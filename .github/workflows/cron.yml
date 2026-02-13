@@ -1,4 +1,4 @@
-name:: Sprint Notification Bot
+name: Sprint Notification Bot
 
 on:
   schedule:
@@ -19,7 +19,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install requests
 
       - name: Run Sprint Script
         run: python app.py

@@ -1,13 +1,25 @@
-name: Sprint Bot
+: Sprint Notification Bot
+
 on:
   schedule:
-    - cron: '0 1 * * *' # Chạy vào 8:00 sáng VN (1:00 UTC) mỗi ngày
+    # Chạy vào 01:00 UTC mỗi ngày (tức 08:00 sáng giờ Việt Nam)
+    - cron: '0 1 * * *'
+  workflow_dispatch: # Cho phép bạn bấm nút chạy thử thủ công
+
 jobs:
-  build:
+  run-bot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run bot
-        run: |
-          pip install requests
-          python app.py
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Sprint Script
+        run: python app.py

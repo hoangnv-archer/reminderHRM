@@ -17,6 +17,9 @@ def send_telegram(message):
     requests.post(url, json=payload)
 
 def check_sprint():
+    # Tạm thời bỏ qua logic ngày tháng để test kết nối
+    send_telegram("🔔 Test bot: Kết nối thành công!")
+    
     today = datetime.date.today()
     # Tính số ngày kể từ ngày gốc
     delta_days = (today - ANCHOR_DATE).days

@@ -1,8 +1,9 @@
 import requests
 import datetime
 import os
-TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+# Hãy kiểm tra kỹ 2 dòng này
+TOKEN = "8424584066:AAFAYhjVsiUBLNl4UXZKEQ0zEYzTxwexsKg" 
+CHAT_ID = -4669194033 # Thay bằng ID nhóm của bạn (có dấu trừ)
 # Chọn một ngày Thứ 2 làm mốc bắt đầu chu kỳ (Ví dụ: 05/01/2026)
 ANCHOR_DATE = datetime.date(2026, 2, 9) 
 

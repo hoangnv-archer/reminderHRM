@@ -57,17 +57,17 @@ def check_sprint():
     # 1. Team Infinity: Thứ 6 (Tuần 3 chu kỳ)
     if cycle_pos == 3 and day_of_week == 4:
         s_num = calculate_sprint_num("INFINITY", today)
-        message = f"🌌 **TEAM INFINITY**\nHôm nay là Thứ 6 - Kết thúc **Sprint {s_num}\n Cập nhật review đê!!!!!!**"
+        message = f"🌌 **TEAM INFINITY**\nHôm nay là Thứ 6 - Kết thúc **Sprint {s_num}\nCập nhật review đê!!!!!!**"
 
     # 2. Team Skybow: Thứ 2 (Tuần 0 chu kỳ)
     elif cycle_pos == 0 and day_of_week == 0:
         s_num = calculate_sprint_num("SKYBOW", today)
-        message = f"🏹 **TEAM SKYBOW**\nHôm nay là Thứ 2 - Kết thúc **Sprint {s_num}\n Cập nhật review đê!!!!!!**"
+        message = f"🏹 **TEAM SKYBOW**\nHôm nay là Thứ 2 - Kết thúc **Sprint {s_num}\nCập nhật review đê!!!!!!**"
 
     # 3. Team Debuffer: Thứ 6 (Tuần 2 chu kỳ)
     elif cycle_pos == 2 and day_of_week == 4:
         s_num = calculate_sprint_num("DEBUFFER", today)
-        message = f"🚀 **TEAM DEBUFFER**\nHôm nay là Thứ 6 - Kết thúc **Sprint {s_num}\n Cập nhật review đê!!!!!!**"
+        message = f"🚀 **TEAM DEBUFFER**\nHôm nay là Thứ 6 - Kết thúc **Sprint {s_num}\nCập nhật review đê!!!!!!**"
 
     if message:
         send_telegram(message)

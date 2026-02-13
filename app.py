@@ -1,21 +1,29 @@
 import requests
 import datetime
 import os
-# Hãy kiểm tra kỹ 2 dòng này
-TOKEN = "8424584066:AAFAYhjVsiUBLNl4UXZKEQ0zEYzTxwexsKg" 
-CHAT_ID = -4669194033 # Thay bằng ID nhóm của bạn (có dấu trừ)
-# Chọn một ngày Thứ 2 làm mốc bắt đầu chu kỳ (Ví dụ: 05/01/2026)
-ANCHOR_DATE = datetime.date(2026, 2, 9) 
+
+# --- CẤU HÌNH ---
+# Token và ID đã được làm sạch ký tự lạ
+TOKEN = "8424584066:AAFAYhjVsiUBLNl4UXZKEQ0zEYzTxwexsKg"
+CHAT_ID = -4669194033
+
+# Mốc tính Sprint (Chọn Thứ 2 của tuần đầu tiên bạn muốn đếm là Sprint 1)
+# Ví dụ: Ngày 05/01/2026 là bắt đầu Sprint 1 của năm
+ANCHOR_DATE = datetime.date(2026, 1, 5)
 
 def send_telegram(message):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    # Đảm bảo đường dẫn API không chứa ký tự lạ
+    url = f"https://api.telegram.org/bot{TOKEN.strip()}/sendMessage"
     payload = {
         "chat_id": CHAT_ID,
         "text": message,
         "parse_mode": "Markdown"
     }
-    response = requests.post(url, json=payload)
-    print(f"Telegram Response: {response.status_code} - {response.text}")
+    try:
+        response = requests.post(url, json=payload)
+        print(f"Telegram Response: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"Error sending message: {e}")
 
 def check_sprint():
     today = datetime.date.today()
@@ -23,28 +31,31 @@ def check_sprint():
     day_of_week = today.weekday() # 0: Thứ 2, 4: Thứ 6
     cycle_pos = week_num % 4
 
-    print(f"Today: {today} | Week Num: {week_num} | Cycle Pos: {cycle_pos} | Day: {day_of_week}")
+    # Tính số thứ tự Sprint (2 tuần/Sprint)
+    days_since_anchor = (today - ANCHOR_DATE).days
+    sprint_num = (days_since_anchor // 14) + 1
+
+    print(f"Today: {today} | Week: {week_num} | Cycle: {cycle_pos} | Day: {day_of_week} | Sprint: {sprint_num}")
 
     message = ""
 
-    # ĐIỀU CHỈNH LOGIC TẠI ĐÂY:
-    # Nếu hôm nay (Thứ 6 ngày 13/02) là ngày của Team Infinity:
+    # Logic gửi tin nhắn theo yêu cầu 3 Team gối đầu
     if cycle_pos == 3 and day_of_week == 4: 
-        message = "🌌 **TEAM INFINITY**\nHôm nay là Thứ 6 - Kết thúc Sprint!"
+        message = f"🌌 **TEAM INFINITY**\nHôm nay là Thứ 6 - Kết thúc **Sprint {sprint_num}**!"
     
-    # Team Skybow sẽ là Thứ 2 tuần tới (Tuần 8 -> 8%4 = 0)
     elif cycle_pos == 0 and day_of_week == 0:
-        message = "🏹 **TEAM SKYBOW**\nHôm nay là Thứ 2 - Kết thúc Sprint!"
+        # Skybow kết thúc Thứ 2 sau Infinity (thường là tuần mới nên dùng số Sprint cũ)
+        message = f"🏹 **TEAM SKYBOW**\nHôm nay là Thứ 2 - Kết thúc **Sprint {sprint_num - 1}**!"
         
-    # Team Debuffer sẽ là Thứ 6 tuần tới nữa (Tuần 9 -> 9%4 = 1)
     elif cycle_pos == 2 and day_of_week == 4:
-        message = "🚀 **TEAM DEBUFFER**\nHôm nay là Thứ 6 - Kết thúc Sprint!"
+        message = f"🚀 **TEAM DEBUFFER**\nHôm nay là Thứ 6 - Kết thúc **Sprint {sprint_num}**!"
 
     if message:
-        print(f"Sending: {message}")
         send_telegram(message)
     else:
-        print("Không có team nào khớp lịch hôm nay. Bot sẽ không gửi tin nhắn.")
+        # Dòng này để test, nếu muốn ép gửi tin nhắn để kiểm tra Token hãy bỏ dấu # ở dưới
+        # send_telegram("🔔 Bot đang chạy nhưng hôm nay không phải ngày kết thúc Sprint.")
+        print("Không có team nào khớp lịch hôm nay.")
 
 if __name__ == "__main__":
     check_sprint()

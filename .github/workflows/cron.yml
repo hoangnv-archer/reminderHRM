@@ -1,4 +1,4 @@
-///////name: Sprint Notification Bot
+name: Sprint Notification Bot
 
 on:
   schedule:
